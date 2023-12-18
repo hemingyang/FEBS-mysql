@@ -47,7 +47,7 @@
 - 其他：fastjson，poi，javacsv，quartz等。
 
 ### 前端
- 
+
 - 基础框架：Bootstrap
 
 - JavaScript框架：jQuery
@@ -112,10 +112,6 @@
 
 ## 部署方式
 
-码云地址： https://gitee.com/github-16661027/project 
-
-GitHub 地址： https://github.com/wuyouzhuguli/FEBS
-
 下载后以maven项目导入。
 
 开发时直接使用Spring Boot的入口类启动即可，访问地址[localhost](localhost)。部署时建议打包成war包，访问地址[localhost:(端口号)/febs](localhost:(端口号)/febs)。账号mrbird，密码123456。
@@ -123,12 +119,19 @@ GitHub 地址： https://github.com/wuyouzhuguli/FEBS
 本软件使用 [Apache License 2.0](http://www.apache.org/licenses/LICENSE-2.0) 协议，请严格遵照协议内容。
 
 ## 常见问题
-[https://mrbird.cc/基于Spring Boot和Shiro的后台管理系统FEBS.html#常见问题](https://mrbird.cc/Spring-Boot%20Shiro%20FEBS.html)
+   数据库驱动问题  如果是低版本mysql 请先换掉这个版本驱动
+
+<!-- MySQL驱动 -->
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.30</version>
+		</dependency>
+
+​	 type: com.alibaba.druid.pool.DruidDataSource
+​      driver-class-name: com.mysql.cj.jdbc.Driver
 
 ## 反馈交流
 
-对于想通过此项目来学习Spring Boot及Shiro的同学可以结合个人Spring Boot系列教程一起学习，效果更佳[https://github.com/wuyouzhuguli/Spring-Boot-Demos](https://github.com/wuyouzhuguli/Spring-Boot-Demos)。
-
-此外，也欢迎加入Q群一起探讨交流。
-
-![http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg](http://olwqftdzl.bkt.clouddn.com/18-3-23/40328650.jpg)
+对于想通过此项目来学习Spring Boot及Shiro的同学可以结合个人Spring Boot系列教程一起学习
