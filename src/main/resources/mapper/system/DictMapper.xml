@@ -6,8 +6,8 @@
       WARNING - @mbg.generated
     -->
     <id column="DICT_ID" jdbcType="DECIMAL" property="dictId" />
-    <result column="KEY" jdbcType="DECIMAL" property="key" />
-    <result column="VALUE" jdbcType="VARCHAR" property="value" />
+    <result column="KEY" jdbcType="DECIMAL" property="keyy" />
+    <result column="VALUE" jdbcType="VARCHAR" property="valuee" />
     <result column="FIELD_NAME" jdbcType="VARCHAR" property="fieldName" />
     <result column="TABLE_NAME" jdbcType="VARCHAR" property="tableName" />
   </resultMap>

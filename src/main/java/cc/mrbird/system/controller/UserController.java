@@ -23,12 +23,18 @@ import cc.mrbird.common.util.MD5Utils;
 import cc.mrbird.system.domain.User;
 import cc.mrbird.system.service.UserService;
 
+/**
+ * 用户控制器
+ */
 @Controller
 public class UserController extends BaseController {
 
 	@Autowired
 	private UserService userService;
 
+	/**
+	 * 用户列表页面
+	 */
 	@RequestMapping("user")
 	@RequiresPermissions("user:list")
 	public String index(Model model) {
@@ -37,6 +43,9 @@ public class UserController extends BaseController {
 		return "system/user/user";
 	}
 
+	/**
+	 * 检查用户名是否可用
+	 */
 	@RequestMapping("user/checkUserName")
 	@ResponseBody
 	public boolean checkUserName(String username, String oldusername) {
@@ -44,11 +53,12 @@ public class UserController extends BaseController {
 			return true;
 		}
 		User result = this.userService.findByName(username);
-		if (result != null)
-			return false;
-		return true;
+		return result == null;
 	}
 
+	/**
+	 * 获取用户信息
+	 */
 	@RequestMapping("user/getUser")
 	@ResponseBody
 	public ResponseBo getUser(Long userId) {
@@ -61,16 +71,22 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 获取用户列表
+	 */
 	@Log("获取用户信息")
 	@RequestMapping("user/list")
 	@ResponseBody
 	public Map<String, Object> userList(QueryRequest request, User user) {
 		PageHelper.startPage(request.getPageNum(), request.getPageSize());
 		List<User> list = this.userService.findUserWithDept(user);
-		PageInfo<User> pageInfo = new PageInfo<User>(list);
+		PageInfo<User> pageInfo = new PageInfo<>(list);
 		return getDataTable(pageInfo);
 	}
 
+	/**
+	 * 导出用户信息为Excel
+	 */
 	@RequestMapping("user/excel")
 	@ResponseBody
 	public ResponseBo userExcel(User user) {
@@ -83,6 +99,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 导出用户信息为Csv
+	 */
 	@RequestMapping("user/csv")
 	@ResponseBody
 	public ResponseBo userCsv(User user) {
@@ -95,6 +114,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 用户注册
+	 */
 	@RequestMapping("user/regist")
 	@ResponseBody
 	public ResponseBo regist(User user) {
@@ -111,6 +133,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 更换用户主题
+	 */
 	@Log("更换主题")
 	@RequestMapping("user/theme")
 	@ResponseBody
@@ -124,16 +149,20 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 新增用户
+	 */
 	@Log("新增用户")
 	@RequiresPermissions("user:add")
 	@RequestMapping("user/add")
 	@ResponseBody
 	public ResponseBo addUser(User user, Long[] roles) {
 		try {
-			if ("on".equalsIgnoreCase(user.getStatus()))
+			if ("on".equalsIgnoreCase(user.getStatus())) {
 				user.setStatus("1");
-			else
+			} else {
 				user.setStatus("0");
+			}
 			this.userService.addUser(user, roles);
 			return ResponseBo.ok("新增用户成功！");
 		} catch (Exception e) {
@@ -142,16 +171,20 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 修改用户信息
+	 */
 	@Log("修改用户")
 	@RequiresPermissions("user:update")
 	@RequestMapping("user/update")
 	@ResponseBody
 	public ResponseBo updateUser(User user, Long[] rolesSelect) {
 		try {
-			if ("on".equalsIgnoreCase(user.getStatus()))
+			if ("on".equalsIgnoreCase(user.getStatus())) {
 				user.setStatus("1");
-			else
+			} else {
 				user.setStatus("0");
+			}
 			this.userService.updateUser(user, rolesSelect);
 			return ResponseBo.ok("修改用户成功！");
 		} catch (Exception e) {
@@ -160,6 +193,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 删除用户
+	 */
 	@Log("删除用户")
 	@RequiresPermissions("user:delete")
 	@RequestMapping("user/delete")
@@ -174,16 +210,20 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 检查密码是否正确
+	 */
 	@RequestMapping("user/checkPassword")
 	@ResponseBody
 	public boolean checkPassword(String password) {
 		User user = getCurrentUser();
 		String encrypt = MD5Utils.encrypt(user.getUsername().toLowerCase(), password);
-		if (user.getPassword().equals(encrypt))
-			return true;
-		return false;
+		return user.getPassword().equals(encrypt);
 	}
 
+	/**
+	 * 更新密码
+	 */
 	@RequestMapping("user/updatePassword")
 	@ResponseBody
 	public ResponseBo updatePassword(String newPassword) {
@@ -196,6 +236,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 个人信息页面
+	 */
 	@RequestMapping("user/profile")
 	public String profileIndex(Model model) {
 		User user = super.getCurrentUser();
@@ -212,6 +255,9 @@ public class UserController extends BaseController {
 		return "system/user/profile";
 	}
 
+	/**
+	 * 获取用户个人信息
+	 */
 	@RequestMapping("user/getUserProfile")
 	@ResponseBody
 	public ResponseBo getUserProfile(Long userId) {
@@ -225,6 +271,9 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 更新用户个人信息
+	 */
 	@RequestMapping("user/updateUserProfile")
 	@ResponseBody
 	public ResponseBo updateUserProfile(User user) {
@@ -237,12 +286,15 @@ public class UserController extends BaseController {
 		}
 	}
 
+	/**
+	 * 更换用户头像
+	 */
 	@RequestMapping("user/changeAvatar")
 	@ResponseBody
 	public ResponseBo changeAvatar(String imgName) {
 		try {
 			String[] img = imgName.split("/");
-			String realImgName = img[img.length-1];
+			String realImgName = img[img.length - 1];
 			User user = getCurrentUser();
 			user.setAvatar(realImgName);
 			this.userService.updateNotNull(user);

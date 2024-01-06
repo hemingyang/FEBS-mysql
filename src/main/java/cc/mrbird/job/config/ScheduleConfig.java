@@ -9,9 +9,6 @@ import java.util.Properties;
 
 /**
  * 定时任务配置
- * 
- * @author Administrator
- *
  */
 @Configuration
 public class ScheduleConfig {
@@ -21,33 +18,39 @@ public class ScheduleConfig {
 		SchedulerFactoryBean factory = new SchedulerFactoryBean();
 		factory.setDataSource(dataSource);
 
-		// quartz参数
+		// Quartz 参数配置
 		Properties prop = new Properties();
 		prop.put("org.quartz.scheduler.instanceName", "MyScheduler");
 		prop.put("org.quartz.scheduler.instanceId", "AUTO");
+
 		// 线程池配置
 		prop.put("org.quartz.threadPool.class", "org.quartz.simpl.SimpleThreadPool");
 		prop.put("org.quartz.threadPool.threadCount", "20");
 		prop.put("org.quartz.threadPool.threadPriority", "5");
-		// JobStore配置
+
+		// JobStore 配置
 		prop.put("org.quartz.jobStore.class", "org.quartz.impl.jdbcjobstore.JobStoreTX");
+
 		// 集群配置
 		prop.put("org.quartz.jobStore.isClustered", "true");
 		prop.put("org.quartz.jobStore.clusterCheckinInterval", "15000");
 		prop.put("org.quartz.jobStore.maxMisfiresToHandleAtATime", "1");
-
 		prop.put("org.quartz.jobStore.misfireThreshold", "12000");
 		prop.put("org.quartz.jobStore.tablePrefix", "QRTZ_");
+
 		factory.setQuartzProperties(prop);
 
 		factory.setSchedulerName("MyScheduler");
+
 		// 延时启动
 		factory.setStartupDelay(1);
 		factory.setApplicationContextSchedulerContextKey("applicationContextKey");
+
 		// 可选，QuartzScheduler
-		// 启动时更新己存在的Job，这样就不用每次修改targetObject后删除qrtz_job_details表对应记录了
+		// 启动时更新已存在的Job，这样就不用每次修改 targetObject 后删除 qrtz_job_details 表对应记录了
 		factory.setOverwriteExistingJobs(true);
-		// 设置自动启动，默认为true
+
+		// 设置自动启动，默认为 true
 		factory.setAutoStartup(true);
 
 		return factory;
